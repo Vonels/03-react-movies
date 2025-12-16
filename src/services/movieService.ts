@@ -24,20 +24,17 @@ export async function fetchMovies({
     throw new Error("VITE_TMDB_TOKEN is missing");
   }
 
-  const response: AxiosResponse<MoviesResponse> = await tmdbApi.get(
-    "/search/movie",
-    {
-      params: {
-        query,
-        page,
-        include_adult: false,
-        language: "en-US",
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const { data } = await tmdbApi.get<MoviesResponse>("/search/movie", {
+    params: {
+      query,
+      page,
+      include_adult: false,
+      language: "en-US",
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  return response.data.results;
+  return data.results;
 }
